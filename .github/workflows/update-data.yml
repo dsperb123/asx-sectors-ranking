@@ -1,0 +1,37 @@
+name: Update ASX Sector Data
+
+on:
+  schedule:
+    # 07:30 UTC Mon–Fri = ~1.5hrs after ASX close (4pm AEST = 06:00 UTC)
+    - cron: "30 7 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install yfinance pandas numpy
+
+      - name: Fetch sector data
+        run: python fetch_data.py
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/sectors.json
+          git diff --staged --quiet && echo "No changes." || \
+            git commit -m "chore: update ASX sector data $(date -u '+%Y-%m-%d %H:%M UTC')" && \
+            git push
