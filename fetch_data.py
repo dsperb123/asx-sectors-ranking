@@ -17,19 +17,19 @@ import yfinance as yf
 
 # ── Config (mirrors Pine Script defaults) ─────────────────────────────────────
 SECTORS = {
-    "XBK.AX": "Banks",
-    "XTJ.AX": "Comm Services",
-    "XDJ.AX": "Cons Disc",
-    "XSJ.AX": "Cons Staples",
-    "XEJ.AX": "Energy",
-    "XFJ.AX": "Financials",
-    "XHJ.AX": "Health Care",
-    "XNJ.AX": "Industrials",
-    "XIJ.AX": "Info Tech",
-    "XMJ.AX": "Materials",
-    "XRE.AX": "Real Estate",
-    "XJR.AX": "Resources",
-    "XUJ.AX": "Utilities",
+    "^AXBK": "Banks",
+    "^AXTJ": "Comm Services",
+    "^AXDJ": "Cons Disc",
+    "^AXSJ": "Cons Staples",
+    "^AXEJ": "Energy",
+    "^AXFJ": "Financials",
+    "^AXHJ": "Health Care",
+    "^AXNJ": "Industrials",
+    "^AXIJ": "Info Tech",
+    "^AXMJ": "Materials",
+    "^AXPJ": "Real Estate",
+    "^AXJR": "Resources",
+    "^AXUJ": "Utilities",
 }
 
 D_LOOKBACK       = 30
@@ -366,7 +366,7 @@ def process_sector(ticker, name):
     spark = [sf((v - lo) / rng * 100) for v in spark_raw]
 
     return {
-        "ticker": ticker.replace(".AX", ""),
+        "ticker": ticker.replace("^AX", "").replace(".AX", ""),
         "name":   name,
         "price":  price,
         "chg":    chg,
